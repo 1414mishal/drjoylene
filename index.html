@@ -262,62 +262,56 @@
     .blob-morph { animation: none; }
   }
 
-  /* line-art silhouette stagger-draw */
-  .nurture-art {
+  /* mother-and-baby line-art image — gentle entrance + tender cradling sway */
+  .nurture-art-img {
     position: absolute; left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    width: min(360px, 68%); height: auto; z-index: 2;
-  }
-  /* figurative path-draw — strokes use pathLength=1 so dasharray works
-     uniformly regardless of true geometric length */
-  .nurture-art [class^="ln"] {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
+    width: min(340px, 64%); height: auto; z-index: 3;
+    /* tint pure-black artwork toward deep corporate purple */
+    filter: brightness(0) saturate(100%)
+            invert(13%) sepia(48%) saturate(3580%)
+            hue-rotate(263deg) brightness(95%) contrast(102%);
     opacity: 0;
+    transform: translate(-50%, -46%) scale(.96);
+    transition: opacity 1.6s cubic-bezier(.2,.7,.2,1),
+                transform 1.6s cubic-bezier(.2,.7,.2,1);
+    will-change: transform, opacity;
   }
-  /* triggered on scroll: parent .nurture-stage gets .in via IntersectionObserver */
-  .nurture-stage.in .nurture-art [class^="ln"] {
-    animation: drawStroke 2.0s cubic-bezier(.55,.06,.22,.98) forwards;
-  }
-  /* staggered, variable speeds — slow & intentional, never robotic */
-  .nurture-stage.in .ln1   { animation-delay: .10s; animation-duration: 3.2s; }
-  .nurture-stage.in .ln2   { animation-delay: 1.10s; animation-duration: 2.6s; }
-  .nurture-stage.in .ln3   { animation-delay: 1.80s; animation-duration: 1.4s; }
-  .nurture-stage.in .ln4   { animation-delay: 2.20s; animation-duration: 2.0s; }
-  .nurture-stage.in .ln5   { animation-delay: 3.10s; animation-duration: 1.0s; }
-  .nurture-stage.in .ln5b  { animation-delay: 3.60s; animation-duration: .9s; }
-  .nurture-stage.in .ln6   { animation-delay: 4.00s; animation-duration: .9s; }
-  .nurture-stage.in .ln7   { animation-delay: 4.30s; animation-duration: 2.4s; }
-  .nurture-stage.in .ln8   { animation-delay: 5.10s; animation-duration: 1.0s; }
-  .nurture-stage.in .ln9   { animation-delay: 5.60s; animation-duration: .8s; }
-  .nurture-stage.in .ln10  { animation-delay: 5.90s; animation-duration: 1.6s; }
-  .nurture-stage.in .ln11  { animation-delay: 6.50s; animation-duration: 1.4s; }
-  .nurture-stage.in .ln12  { animation-delay: 7.00s; animation-duration: 1.0s; }
-  .nurture-stage.in .ln12b { animation-delay: 7.60s; animation-duration: 1.2s; }
-  .nurture-stage.in .ln13  { animation-delay: 8.20s; animation-duration: 2.4s; }
-
-  @keyframes drawStroke {
-    0%   { opacity: 0; stroke-dashoffset: 1; }
-    8%   { opacity: 1; }
-    100% { opacity: 1; stroke-dashoffset: 0; }
-  }
-
-  /* once fully drawn, the whole composition gently sways like cradling */
-  .nurture-stage.in .art-sway {
-    transform-origin: 300px 460px;
-    animation: artSway 9s ease-in-out 11s infinite;
+  .nurture-stage.in .nurture-art-img {
+    opacity: 1;
+    animation: artSway 9s ease-in-out 1.4s infinite;
   }
   @keyframes artSway {
-    0%,100% { transform: rotate(-1.4deg) translateY(0); }
-    50%     { transform: rotate(1.4deg)  translateY(-4px); }
+    0%,100% { transform: translate(-50%, -50%) rotate(-1.4deg); }
+    50%     { transform: translate(-50%, -52%) rotate(1.4deg);  }
+  }
+
+  /* breathing soft halo behind the figure */
+  .nurture-halo {
+    position: absolute; left: 50%; top: 50%;
+    width: 460px; height: 460px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%,
+                rgba(214,168,255,.55) 0%,
+                rgba(180,225,225,.32) 40%,
+                rgba(255,255,255,0)   72%);
+    filter: blur(8px);
+    z-index: 2; pointer-events: none;
+    animation: haloBreathe 7s ease-in-out infinite;
+  }
+  @media (max-width: 640px) { .nurture-halo { width: 300px; height: 300px; } }
+  @keyframes haloBreathe {
+    0%,100% { transform: translate(-50%, -50%) scale(1);    opacity: .85; }
+    50%     { transform: translate(-50%, -50%) scale(1.06); opacity: 1;   }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .nurture-art [class^="ln"] {
-      animation: none !important;
-      opacity: 1; stroke-dashoffset: 0;
+    .nurture-art-img,
+    .nurture-stage.in .nurture-art-img {
+      animation: none !important; transition: none;
+      opacity: 1; transform: translate(-50%, -50%);
     }
-    .art-sway { animation: none !important; }
+    .nurture-halo { animation: none !important; }
   }
 
   .nurture-pills {
@@ -586,95 +580,13 @@
                C320,110 350,120 420,120 Z" />
     </svg>
 
-    <!-- mother & sleeping cradled baby — figurative path-draw (scroll-triggered) -->
-    <svg class="nurture-art" viewBox="0 0 600 680" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-      <g class="art-sway" fill="none" stroke="#4C1D95" stroke-linecap="round" stroke-linejoin="round">
-        <!-- 1. enveloping outer hair / back arc — sweeping curve around them both -->
-        <path pathLength="1" class="ln ln1" stroke-width="13"
-              d="M180,110
-                 C110,140 70,230 80,330
-                 C92,440 160,540 280,580
-                 C400,615 510,560 540,460
-                 C572,355 540,240 460,170
-                 C390,108 300,90 240,100" />
+    <!-- mother & cradled baby — actual line-art illustration with scroll-fade & tender sway -->
+    <img class="nurture-art-img" src="mother-baby-silhouette.webp"
+         alt="Line-art illustration of a mother cradling her sleeping baby"
+         loading="lazy" decoding="async" />
 
-        <!-- 2. mother's flowing hair (front fall down her right cheek to shoulder) -->
-        <path pathLength="1" class="ln ln2" stroke-width="10"
-              d="M210,150
-                 C190,200 196,260 220,310
-                 C238,348 252,392 250,440
-                 C246,485 230,520 200,545" />
-
-        <!-- 3. inner hair line that defines forehead and side of face -->
-        <path pathLength="1" class="ln ln3" stroke-width="7"
-              d="M260,170
-                 C238,190 232,225 246,255" />
-
-        <!-- 4. face profile: forehead -> nose -> upper lip -> lower lip -> chin -->
-        <path pathLength="1" class="ln ln4" stroke-width="5"
-              d="M285,210
-                 C278,238 286,258 296,266
-                 C302,272 298,278 290,282
-                 C298,288 308,290 314,288
-                 C320,294 320,306 308,316" />
-
-        <!-- 5. closed eye (downcast curve) -->
-        <path pathLength="1" class="ln ln5" stroke-width="4"
-              d="M256,234 C268,228 286,228 296,234" />
-
-        <!-- 6. delicate lashes (3 short strokes) -->
-        <path pathLength="1" class="ln ln5b" stroke-width="2.5"
-              d="M262,239 L259,247 M272,240 L270,250 M282,239 L282,250" />
-
-        <!-- 7. mother's chin/jaw arc tucking down toward baby -->
-        <path pathLength="1" class="ln ln6" stroke-width="6"
-              d="M308,316 C302,338 320,346 340,344" />
-
-        <!-- 8. baby's head — round, nestled below mother's chin (profile, smaller) -->
-        <path pathLength="1" class="ln ln7" stroke-width="9"
-              d="M360,332
-                 C320,338 300,372 308,408
-                 C314,440 348,460 388,455
-                 C424,450 444,420 442,390
-                 C440,358 408,326 360,332 Z" />
-
-        <!-- 9. baby's visible ear -->
-        <path pathLength="1" class="ln ln8" stroke-width="4"
-              d="M340,388 C334,394 334,406 340,412 C344,415 348,414 350,410" />
-
-        <!-- 10. baby's closed eye -->
-        <path pathLength="1" class="ln ln9" stroke-width="3"
-              d="M380,388 C386,385 396,385 402,388" />
-
-        <!-- 11. baby's body curve (back/shoulders) -->
-        <path pathLength="1" class="ln ln10" stroke-width="9"
-              d="M398,455
-                 C420,470 440,498 432,528
-                 C424,556 392,572 360,568" />
-
-        <!-- 12. baby's bent leg (knee tucked up) -->
-        <path pathLength="1" class="ln ln11" stroke-width="8"
-              d="M360,568
-                 C338,570 318,556 312,532
-                 C308,512 320,494 340,490" />
-
-        <!-- 13. baby's small hand reaching out with delicate fingers -->
-        <path pathLength="1" class="ln ln12" stroke-width="6"
-              d="M310,470
-                 C292,478 280,492 286,506" />
-        <path pathLength="1" class="ln ln12b" stroke-width="2.5"
-              d="M286,506 L280,514
-                 M291,508 L287,520
-                 M297,509 L296,522
-                 M303,506 L307,518" />
-
-        <!-- 14. mother's cradling forearm sweeping under the baby -->
-        <path pathLength="1" class="ln ln13" stroke-width="10"
-              d="M170,420
-                 C200,500 290,560 410,548
-                 C480,540 520,498 528,452" />
-      </g>
-    </svg>
+    <!-- soft glow halo behind the figure that breathes -->
+    <span class="nurture-halo" aria-hidden="true"></span>
 
     <div class="nurture-pills">
       <span class="np-pill" style="--d:2.4s">Adolescence</span>
