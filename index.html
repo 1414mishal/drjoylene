@@ -269,27 +269,37 @@
     width: min(360px, 68%); height: auto; z-index: 2;
   }
   .nurture-art .ln {
-    stroke-dasharray: 600;
-    stroke-dashoffset: 600;
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
     opacity: 0;
-    animation: drawStroke 1.6s cubic-bezier(.5,.05,.2,1) forwards;
+    animation: drawStroke 2.0s cubic-bezier(.5,.05,.2,1) forwards;
   }
-  .nurture-art .ln1 { animation-delay: .15s; }
-  .nurture-art .ln2 { animation-delay: .55s; }
-  .nurture-art .ln3 { animation-delay: .85s; }
-  .nurture-art .ln4 { animation-delay: 1.05s; animation-duration: 1.0s; }
-  .nurture-art .ln5 { animation-delay: 1.30s; animation-duration: 1.2s; }
-  .nurture-art .ln6 { animation-delay: 1.65s; animation-duration: 1.3s; }
-  .nurture-art .ln7 { animation-delay: 1.95s; }
+  .nurture-art .ln1 { animation-delay: .15s; animation-duration: 2.4s; }
+  .nurture-art .ln2 { animation-delay: 1.10s; animation-duration: 1.6s; }
+  .nurture-art .ln3 { animation-delay: 1.65s; animation-duration: 1.4s; }
+  .nurture-art .ln4 { animation-delay: 2.10s; animation-duration: .8s; }
+  .nurture-art .ln5 { animation-delay: 2.30s; animation-duration: 1.6s; }
+  .nurture-art .ln6 { animation-delay: 2.85s; animation-duration: 1.2s; }
+  .nurture-art .ln7 { animation-delay: 3.25s; animation-duration: .8s; }
+  .nurture-art .ln8 { animation-delay: 3.40s; animation-duration: 1.4s; }
   @keyframes drawStroke {
-    0%   { opacity: 0;   stroke-dashoffset: 600; }
+    0%   { opacity: 0;   stroke-dashoffset: 1400; }
     20%  { opacity: 1; }
     100% { opacity: 1;   stroke-dashoffset: 0; }
   }
+  /* gentle sway once everything is drawn */
+  .art-sway {
+    transform-origin: 260px 400px;
+    animation: artSway 8s ease-in-out infinite;
+    animation-delay: 5s;
+  }
+  @keyframes artSway {
+    0%,100% { transform: rotate(-1.2deg) translateY(0); }
+    50%     { transform: rotate(1.2deg) translateY(-3px); }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .nurture-art .ln {
-      animation: none; opacity: 1; stroke-dashoffset: 0;
-    }
+    .nurture-art .ln { animation: none; opacity: 1; stroke-dashoffset: 0; }
+    .art-sway { animation: none; }
   }
 
   .nurture-pills {
@@ -558,29 +568,63 @@
                C320,110 350,120 420,120 Z" />
     </svg>
 
-    <!-- minimalist line-art mother & child (stagger-draw) -->
-    <svg class="nurture-art" viewBox="0 0 480 420" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <!-- mother cradling baby — bold brush-stroke silhouette (stagger-draws then sways) -->
+    <svg class="nurture-art" viewBox="0 0 520 600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="lineStroke" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0" stop-color="#4b2c5e"/>
           <stop offset="1" stop-color="#341547"/>
         </linearGradient>
       </defs>
-      <g fill="none" stroke="url(#lineStroke)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <!-- mother head -->
-        <circle class="ln ln1" cx="240" cy="120" r="36" />
-        <!-- mother shoulder & body curve (left side) -->
-        <path class="ln ln2" d="M170,180 C170,220 158,280 168,340 C176,380 210,400 240,400" />
-        <!-- mother shoulder & body curve (right side, cradling arm dipping in) -->
-        <path class="ln ln3" d="M310,180 C320,220 330,260 308,290 C290,310 260,308 240,300" />
-        <!-- mother neckline -->
-        <path class="ln ln4" d="M210,168 C222,182 258,182 270,168" />
-        <!-- baby head nestled into mother's arm -->
-        <circle class="ln ln5" cx="220" cy="288" r="22" />
-        <!-- baby blanket / wrap curve -->
-        <path class="ln ln6" d="M198,302 C210,326 246,332 270,318 C292,304 296,282 290,270" />
-        <!-- mother's other arm wrapping under baby -->
-        <path class="ln ln7" d="M168,332 C198,360 252,368 296,346" />
+      <g class="art-sway" fill="none" stroke="url(#lineStroke)" stroke-linecap="round" stroke-linejoin="round">
+        <!-- the big enveloping arc — mother's shawl/back wrapping around baby -->
+        <path class="ln ln1" stroke-width="14"
+              d="M150,90
+                 C90,150 70,260 110,360
+                 C150,470 270,540 380,500
+                 C470,470 480,380 460,300
+                 C440,220 400,150 340,110
+                 C290,80 230,70 200,80" />
+
+        <!-- mother's hair / head outline (flowing on her right side) -->
+        <path class="ln ln2" stroke-width="11"
+              d="M210,130
+                 C195,165 200,210 220,250
+                 C240,290 280,310 320,300" />
+
+        <!-- mother's face profile (forehead -> nose -> lips -> chin) -->
+        <path class="ln ln3" stroke-width="6"
+              d="M250,178
+                 C242,200 250,222 258,232
+                 C262,238 258,246 252,250
+                 C260,260 274,262 282,258" />
+
+        <!-- mother's closed eyelash -->
+        <path class="ln ln4" stroke-width="3.5"
+              d="M256,200 C262,196 270,196 274,200" />
+
+        <!-- baby's head (round, nestled below mother's chin) -->
+        <path class="ln ln5" stroke-width="11"
+              d="M300,270
+                 C260,275 240,310 250,355
+                 C260,400 310,420 360,408
+                 C410,396 430,355 420,315
+                 C410,280 360,265 300,270 Z" />
+
+        <!-- baby's tucked arm reaching down -->
+        <path class="ln ln6" stroke-width="9"
+              d="M300,400
+                 C290,440 320,470 360,470
+                 C390,470 410,455 410,430" />
+
+        <!-- baby's eye (closed) -->
+        <path class="ln ln7" stroke-width="3"
+              d="M340,355 C346,352 354,352 360,355" />
+
+        <!-- mother's cradling forearm under the baby -->
+        <path class="ln ln8" stroke-width="10"
+              d="M180,400
+                 C220,470 320,510 410,490" />
       </g>
     </svg>
 
