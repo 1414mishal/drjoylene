@@ -65,7 +65,7 @@
       "@id": "https://www.drjoylenedalmeida.com/#pulse-polyclinic",
       "name": "Pulse Polyclinic — Dr. Joylene D'Almeida",
       "image": "https://www.drjoylenedalmeida.com/joy1.jpeg",
-      "telephone": "+91-9880487755",
+      "telephone": ["+91-9663557319","+91-9880487755"],
       "url": "https://www.drjoylenedalmeida.com/#clinics",
       "address": {"@type":"PostalAddress","streetAddress":"Jayashree Nursing Home, Near City Centre Mall, Opposite Prabhat Talkies, K.S. Rao Road","addressLocality":"Mangaluru","addressRegion":"Karnataka","addressCountry":"IN"},
       "openingHoursSpecification": [
@@ -94,7 +94,7 @@
     {
       "@type": "FAQPage",
       "mainEntity": [
-        {"@type":"Question","name":"How can I book an appointment with Dr. Joylene?","acceptedAnswer":{"@type":"Answer","text":"Call Pulse Polyclinic on +91 98804 87755, or The Olive Clinics on +91 63625 32742. WhatsApp messages are accepted for queries and bookings. Walk-in consultations are subject to availability."}},
+        {"@type":"Question","name":"How can I book an appointment with Dr. Joylene?","acceptedAnswer":{"@type":"Answer","text":"For Pulse Polyclinic appointments, call or WhatsApp +91 96635 57319 (clinic line: +91 98804 87755). For The Olive Clinics, call +91 63625 32742. Walk-in consultations are subject to availability."}},
         {"@type":"Question","name":"What are the consultation hours at Pulse Polyclinic?","acceptedAnswer":{"@type":"Answer","text":"Weekdays from 1:30 PM to 2:30 PM and 5:00 PM to 7:00 PM at Pulse Polyclinic, K.S. Rao Road, Mangaluru."}},
         {"@type":"Question","name":"Does Dr. Joylene perform laparoscopic surgery?","acceptedAnswer":{"@type":"Answer","text":"Yes — Fellowship in Minimal Access Surgery (FMAS) from World Laparoscopy Hospital. Procedures include laparoscopic hysterectomy, ovarian cyst removal, fibroid management, endometriosis surgery, hysteroscopy and TVT-O sling procedures."}},
         {"@type":"Question","name":"Does she handle high-risk pregnancies?","acceptedAnswer":{"@type":"Answer","text":"Yes. High-risk pregnancy management is one of her core areas of expertise, alongside normal and assisted vaginal deliveries and cesarean sections."}},
@@ -183,6 +183,139 @@
   @supports (padding: max(0px)) {
     .safe-bottom { padding-bottom: max(1.5rem, env(safe-area-inset-bottom)); }
   }
+
+  /* ===== Scroll-reveal: sections fade & rise as you scroll ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(.2,.7,.2,1), transform 0.9s cubic-bezier(.2,.7,.2,1);
+    will-change: opacity, transform;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: .08s; }
+  .reveal-delay-2 { transition-delay: .16s; }
+  .reveal-delay-3 { transition-delay: .24s; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+
+  /* ===== Ambient floating blobs across hero ===== */
+  @keyframes floatA { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(20px,-30px) rotate(8deg); } }
+  @keyframes floatB { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(-25px,18px) rotate(-6deg); } }
+  @keyframes floatC { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(10px,-12px) scale(1.06); } }
+  .blob-a { animation: floatA 14s ease-in-out infinite; }
+  .blob-b { animation: floatB 18s ease-in-out infinite; }
+  .blob-c { animation: floatC 11s ease-in-out infinite; }
+
+  /* gentle morphing of organic shape */
+  @keyframes morph {
+    0%,100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+    33%     { border-radius: 60% 40% 50% 50% / 55% 45% 60% 40%; }
+    66%     { border-radius: 50% 50% 30% 70% / 40% 60% 50% 50%; }
+  }
+  .morph { animation: morph 12s ease-in-out infinite; }
+
+  /* ===== "Vita" — over-the-top gynaecology animation ===== */
+  .vita-stage {
+    position: relative;
+    height: 460px;
+    border-radius: 2rem;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 20% 30%, #fdeef2 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 70%, #efdbff 0%, transparent 55%),
+      linear-gradient(135deg, #fff 0%, #f6efff 100%);
+    box-shadow: 0 30px 80px -30px rgba(52,21,71,0.25);
+    isolation: isolate;
+  }
+  @media (max-width: 640px) { .vita-stage { height: 360px; } }
+
+  /* slow rotating aura */
+  .vita-aura {
+    position: absolute; inset: -10%;
+    background: conic-gradient(from 0deg, rgba(115,81,134,0.12), rgba(214,168,255,0.0) 30%, rgba(253,222,234,0.18) 55%, rgba(115,81,134,0.10) 100%);
+    animation: spinSlow 28s linear infinite;
+    filter: blur(20px);
+    z-index: 0;
+  }
+  @keyframes spinSlow { to { transform: rotate(360deg); } }
+
+  /* drifting petals */
+  .petal {
+    position: absolute; width: 22px; height: 22px;
+    background: radial-gradient(ellipse at 30% 30%, #ffd6e3, #d6a8ff 70%, transparent 75%);
+    border-radius: 70% 30% 70% 30% / 30% 70% 30% 70%;
+    opacity: .85;
+    filter: blur(.3px);
+    animation: drift 16s linear infinite;
+    z-index: 2;
+  }
+  .petal.p2 { width:14px; height:14px; animation-duration: 20s; opacity:.7; }
+  .petal.p3 { width:10px; height:10px; animation-duration: 24s; opacity:.6; }
+  @keyframes drift {
+    0%   { transform: translate(0,420px) rotate(0deg); }
+    100% { transform: translate(40px,-40px) rotate(360deg); }
+  }
+
+  /* heartbeat EKG */
+  .ekg-line { stroke: #4b2c5e; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 1200; stroke-dashoffset: 1200; animation: trace 3.4s ease-in-out infinite; }
+  @keyframes trace {
+    0% { stroke-dashoffset: 1200; }
+    50% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: -1200; }
+  }
+  .pulse-dot {
+    transform-origin: center;
+    animation: pulse 1.4s ease-in-out infinite;
+    fill: #341547;
+  }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity:.9; } 50% { transform: scale(1.7); opacity:.4; } }
+
+  /* DNA double helix */
+  .helix { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; }
+  .helix svg { overflow: visible; }
+  @keyframes spinY { to { transform: rotateY(360deg); } }
+  .helix-inner { animation: spinY 8s linear infinite; transform-style: preserve-3d; }
+
+  /* lotus bloom centre */
+  .bloom-petal {
+    transform-origin: 50% 100%;
+    animation: bloom 6s ease-in-out infinite alternate;
+    fill: url(#bloomGrad);
+    opacity: .92;
+  }
+  @keyframes bloom {
+    0%   { transform: scale(.4) rotate(var(--r,0deg)); opacity:.4; }
+    100% { transform: scale(1)   rotate(var(--r,0deg)); opacity:.95; }
+  }
+
+  /* glowing orbits */
+  .orbit { position: absolute; top:50%; left:50%; border: 1px dashed rgba(115,81,134,.25); border-radius: 50%; transform: translate(-50%,-50%); }
+  .orbit::after {
+    content: ""; position: absolute; top:-6px; left: 50%; width: 10px; height: 10px; border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, #d6a8ff 60%, #735186 100%);
+    box-shadow: 0 0 18px 4px rgba(214,168,255,.6);
+    transform: translateX(-50%);
+  }
+  .orbit.o1 { width: 220px; height: 220px; animation: spinSlow 14s linear infinite; }
+  .orbit.o2 { width: 320px; height: 320px; animation: spinSlow 22s linear infinite reverse; }
+  .orbit.o3 { width: 420px; height: 420px; animation: spinSlow 32s linear infinite; }
+
+  /* sparkles */
+  .spark {
+    position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%;
+    box-shadow: 0 0 12px 3px rgba(255,255,255,.9), 0 0 30px 6px rgba(214,168,255,.7);
+    animation: twinkle 2.6s ease-in-out infinite;
+    z-index: 4;
+  }
+  @keyframes twinkle { 0%,100% { opacity:.2; transform: scale(.6); } 50% { opacity:1; transform: scale(1.2); } }
+
+  .vita-caption {
+    position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
+    font-family: 'Noto Serif', serif; color: #341547; font-size: 14px; letter-spacing: .12em;
+    text-transform: uppercase; opacity: .85; z-index: 6; white-space: nowrap;
+  }
 </style>
 </head>
 <body class="antialiased min-h-screen overflow-x-hidden">
@@ -263,9 +396,9 @@
     </div>
 
     <div class="lg:col-span-5 relative flex justify-center lg:justify-end order-1 lg:order-2">
-      <div class="absolute -top-6 -right-6 w-32 h-32 md:w-40 md:h-40 bg-primary-fixed rounded-full mix-blend-multiply filter blur-3xl opacity-70 -z-10"></div>
-      <div class="absolute -bottom-8 -left-6 w-36 h-36 md:w-48 md:h-48 bg-blush-deep rounded-full mix-blend-multiply filter blur-2xl opacity-70 -z-10"></div>
-      <div class="w-[240px] h-[300px] sm:w-[320px] sm:h-[400px] md:w-[360px] md:h-[460px] organic-shape bg-surface-soft overflow-hidden relative ambient-shadow border-4 border-white">
+      <div class="absolute -top-6 -right-6 w-32 h-32 md:w-40 md:h-40 bg-primary-fixed rounded-full mix-blend-multiply filter blur-3xl opacity-70 -z-10 blob-a"></div>
+      <div class="absolute -bottom-8 -left-6 w-36 h-36 md:w-48 md:h-48 bg-blush-deep rounded-full mix-blend-multiply filter blur-2xl opacity-70 -z-10 blob-b"></div>
+      <div class="w-[240px] h-[300px] sm:w-[320px] sm:h-[400px] md:w-[360px] md:h-[460px] organic-shape morph bg-surface-soft overflow-hidden relative ambient-shadow border-4 border-white">
         <img src="joymain.jpg" alt="Dr. Joylene Diana D'Almeida" class="w-full h-full object-cover" />
       </div>
     </div>
@@ -274,7 +407,7 @@
 
 <!-- =================== ABOUT =================== -->
 <section id="about" class="px-5 sm:px-6 md:px-10 py-12 md:py-20 max-w-7xl mx-auto">
-  <div class="bg-white rounded-3xl p-6 sm:p-8 md:p-14 ambient-shadow border border-outline-variant/30 relative overflow-hidden">
+  <div class="bg-white rounded-3xl p-6 sm:p-8 md:p-14 ambient-shadow border border-outline-variant/30 relative overflow-hidden reveal">
     <div class="absolute top-0 right-0 w-[300px] h-[300px] md:w-[400px] md:h-[400px] bg-blush/60 rounded-full blur-[80px] -z-10 translate-x-1/3 -translate-y-1/3"></div>
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-center">
       <div class="hidden md:flex md:col-span-5 justify-center">
@@ -310,10 +443,118 @@
   </div>
 </section>
 
+<!-- =================== VITA — gynaecology animation =================== -->
+<section aria-label="Every life, lovingly tended" class="px-5 sm:px-6 md:px-10 py-10 sm:py-14 md:py-20 max-w-7xl mx-auto">
+  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-10 reveal">
+    <span class="text-xs font-semibold tracking-widest uppercase text-secondary">A Living Promise</span>
+    <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Where Science Meets the Sacred Spark of Life</h2>
+    <p class="text-on-surface-variant max-w-2xl mx-auto">From the first heartbeat to the strength of a mother — every patient is a universe.</p>
+  </div>
+
+  <div class="vita-stage reveal reveal-delay-1">
+    <div class="vita-aura"></div>
+
+    <!-- orbits -->
+    <div class="orbit o1"></div>
+    <div class="orbit o2"></div>
+    <div class="orbit o3"></div>
+
+    <!-- DNA helix -->
+    <div class="helix">
+      <div class="helix-inner">
+        <svg width="120" height="280" viewBox="0 0 120 280" aria-hidden="true">
+          <defs>
+            <linearGradient id="dnaA" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#341547"/>
+              <stop offset="1" stop-color="#735186"/>
+            </linearGradient>
+            <linearGradient id="dnaB" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#d6a8ff"/>
+              <stop offset="1" stop-color="#ffd6e3"/>
+            </linearGradient>
+          </defs>
+          <!-- two helical strands -->
+          <path d="M20,0 C100,30 100,70 20,100 C100,130 100,170 20,200 C100,230 100,270 20,280" stroke="url(#dnaA)" stroke-width="3" fill="none" />
+          <path d="M100,0 C20,30 20,70 100,100 C20,130 20,170 100,200 C20,230 20,270 100,280" stroke="url(#dnaB)" stroke-width="3" fill="none" />
+          <!-- rungs -->
+          <g stroke="#735186" stroke-width="1.5" opacity=".55">
+            <line x1="22" y1="14" x2="98" y2="14"/>
+            <line x1="38" y1="42" x2="82" y2="42"/>
+            <line x1="58" y1="70" x2="62" y2="70"/>
+            <line x1="38" y1="98" x2="82" y2="98"/>
+            <line x1="22" y1="126" x2="98" y2="126"/>
+            <line x1="38" y1="154" x2="82" y2="154"/>
+            <line x1="58" y1="182" x2="62" y2="182"/>
+            <line x1="38" y1="210" x2="82" y2="210"/>
+            <line x1="22" y1="238" x2="98" y2="238"/>
+            <line x1="38" y1="266" x2="82" y2="266"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Lotus / bloom centre with EKG line -->
+    <svg class="absolute" style="top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;" width="260" height="260" viewBox="-130 -130 260 260" aria-hidden="true">
+      <defs>
+        <radialGradient id="bloomGrad" cx="50%" cy="100%" r="80%">
+          <stop offset="0" stop-color="#ffd6e3"/>
+          <stop offset=".55" stop-color="#d6a8ff"/>
+          <stop offset="1" stop-color="#735186" stop-opacity=".0"/>
+        </radialGradient>
+        <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#fff"/>
+          <stop offset=".5" stop-color="#ffd6e3"/>
+          <stop offset="1" stop-color="#d6a8ff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- 8 petals around centre -->
+      <g>
+        <ellipse class="bloom-petal" style="--r:0deg;"   cx="0" cy="-40" rx="14" ry="40"/>
+        <ellipse class="bloom-petal" style="--r:45deg;"  cx="0" cy="-40" rx="14" ry="40" transform="rotate(45)"/>
+        <ellipse class="bloom-petal" style="--r:90deg;"  cx="0" cy="-40" rx="14" ry="40" transform="rotate(90)"/>
+        <ellipse class="bloom-petal" style="--r:135deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(135)"/>
+        <ellipse class="bloom-petal" style="--r:180deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(180)"/>
+        <ellipse class="bloom-petal" style="--r:225deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(225)"/>
+        <ellipse class="bloom-petal" style="--r:270deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(270)"/>
+        <ellipse class="bloom-petal" style="--r:315deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(315)"/>
+      </g>
+
+      <!-- core glow -->
+      <circle r="22" fill="url(#coreGlow)"/>
+      <!-- pulsing heartbeat dot -->
+      <circle class="pulse-dot" r="6"/>
+
+      <!-- EKG sweep -->
+      <path class="ekg-line"
+            d="M-130,0 L-90,0 L-78,-8 L-66,16 L-54,-30 L-42,30 L-30,-12 L-18,0 L60,0 L72,-8 L84,16 L96,-30 L108,30 L120,-10 L130,0" />
+    </svg>
+
+    <!-- petals drifting -->
+    <span class="petal" style="left:8%; top:90%; animation-delay:0s;"></span>
+    <span class="petal p2" style="left:22%; top:95%; animation-delay:-3s;"></span>
+    <span class="petal p3" style="left:36%; top:88%; animation-delay:-7s;"></span>
+    <span class="petal" style="left:55%; top:96%; animation-delay:-1.5s;"></span>
+    <span class="petal p2" style="left:70%; top:90%; animation-delay:-9s;"></span>
+    <span class="petal p3" style="left:85%; top:94%; animation-delay:-12s;"></span>
+    <span class="petal p2" style="left:48%; top:92%; animation-delay:-5s;"></span>
+
+    <!-- sparkles -->
+    <span class="spark" style="left:18%; top:30%; animation-delay:-.4s;"></span>
+    <span class="spark" style="left:78%; top:24%; animation-delay:-1.2s;"></span>
+    <span class="spark" style="left:65%; top:72%; animation-delay:-2s;"></span>
+    <span class="spark" style="left:30%; top:65%; animation-delay:-2.6s;"></span>
+    <span class="spark" style="left:88%; top:55%; animation-delay:-1.8s;"></span>
+    <span class="spark" style="left:12%; top:60%; animation-delay:-.8s;"></span>
+
+    <div class="vita-caption">Heartbeat · Helix · Bloom</div>
+  </div>
+</section>
+
 <!-- =================== AREAS OF EXPERTISE (one block) =================== -->
 <section id="expertise" class="px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 bg-surface-soft">
   <div class="max-w-7xl mx-auto">
-    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12">
+    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12 reveal">
       <span class="text-xs font-semibold tracking-widest uppercase text-secondary">Areas of Expertise</span>
       <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Comprehensive Care Tailored to Every Stage of Life</h2>
       <p class="text-on-surface-variant max-w-2xl mx-auto">From adolescence to menopause — focused, evidence-based, compassionate gynecology.</p>
@@ -439,7 +680,7 @@
 
 <!-- =================== SPECIALISATIONS =================== -->
 <section id="specialisations" class="px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 max-w-7xl mx-auto">
-  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12">
+  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12 reveal">
     <span class="text-xs font-semibold tracking-widest uppercase text-secondary">Specialisations</span>
     <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Advanced Surgical & Sub-Specialty Procedures</h2>
     <p class="text-on-surface-variant max-w-2xl mx-auto">Fellowship-trained in Minimal Access Surgery (World Laparoscopy Hospital).</p>
@@ -524,7 +765,7 @@
 <section class="relative px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 gradient-bg overflow-hidden">
   <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-white/40 rounded-full blur-[100px] -z-0"></div>
   <div class="max-w-7xl mx-auto relative z-10">
-    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12">
+    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12 reveal">
       <span class="text-xs font-semibold tracking-widest uppercase text-secondary">Claim to Fame</span>
       <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Milestones in Maternal & Neonatal Care</h2>
     </div>
@@ -571,7 +812,7 @@
 <!-- =================== CLINICS / BOOKING =================== -->
 <section id="clinics" class="px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 max-w-7xl mx-auto">
   <div id="book"></div>
-  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12">
+  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12 reveal">
     <span class="text-xs font-semibold tracking-widest uppercase text-secondary">Consultation & Booking</span>
     <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Clinic Locations</h2>
     <p class="text-on-surface-variant">Available at two trusted locations in Mangalore.</p>
@@ -600,15 +841,18 @@
             <strong>Weekdays:</strong> 01:30 PM – 02:30 PM &amp; 05:00 PM – 07:00 PM
           </div>
         </div>
-        <div class="flex items-center gap-3 text-on-surface-variant">
-          <span class="material-symbols-outlined text-primary">call</span>
-          <a href="tel:+919880487755" class="text-sm font-semibold text-primary hover:underline">+91 98804 87755</a>
+        <div class="flex items-start gap-3 text-on-surface-variant">
+          <span class="material-symbols-outlined text-primary mt-0.5">call</span>
+          <div class="text-sm leading-relaxed">
+            <a href="tel:+919663557319" class="font-semibold text-primary hover:underline">+91 96635 57319</a>
+            <span class="block text-xs text-on-surface-variant/80">Clinic: <a href="tel:+919880487755" class="hover:underline">+91 98804 87755</a></span>
+          </div>
         </div>
         <div class="flex flex-wrap gap-3 pt-2">
-          <a href="tel:+919880487755" class="bg-primary text-white text-[11px] sm:text-xs tracking-widest font-semibold uppercase px-4 sm:px-5 py-2.5 sm:py-3 rounded-full hover:bg-secondary transition inline-flex items-center gap-2">
+          <a href="tel:+919663557319" class="bg-primary text-white text-[11px] sm:text-xs tracking-widest font-semibold uppercase px-4 sm:px-5 py-2.5 sm:py-3 rounded-full hover:bg-secondary transition inline-flex items-center gap-2">
             <span class="material-symbols-outlined text-[18px]">call</span> Call to Book
           </a>
-          <a href="https://wa.me/919880487755" target="_blank" rel="noopener" class="bg-lavender text-primary text-[11px] sm:text-xs tracking-widest font-semibold uppercase px-4 sm:px-5 py-2.5 sm:py-3 rounded-full hover:bg-lavender-deep transition inline-flex items-center gap-2">
+          <a href="https://wa.me/919663557319" target="_blank" rel="noopener" class="bg-lavender text-primary text-[11px] sm:text-xs tracking-widest font-semibold uppercase px-4 sm:px-5 py-2.5 sm:py-3 rounded-full hover:bg-lavender-deep transition inline-flex items-center gap-2">
             <span class="material-symbols-outlined text-[18px]">chat</span> WhatsApp
           </a>
           <a href="https://www.google.com/maps/search/?api=1&query=Pulse+Polyclinic+Jayashree+Nursing+Home+K+S+Rao+Road+Mangalore" target="_blank" rel="noopener" class="border border-primary/30 text-primary text-[11px] sm:text-xs tracking-widest font-semibold uppercase px-4 sm:px-5 py-2.5 sm:py-3 rounded-full hover:bg-primary/5 transition inline-flex items-center gap-2">
@@ -666,7 +910,7 @@
 <!-- =================== MEMORIES / GALLERY =================== -->
 <section id="memories" class="px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 bg-surface-soft">
   <div class="max-w-7xl mx-auto">
-    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12">
+    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12 reveal">
       <span class="text-xs font-semibold tracking-widest uppercase text-secondary">Memories</span>
       <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Talks, Posters &amp; Moments</h2>
       <p class="text-on-surface-variant">Glimpses from CMEs, conferences, deliveries and community work.</p>
@@ -706,24 +950,25 @@
 
 <!-- =================== MEDIA: VIDEOS & ARTICLES =================== -->
 <section id="media" class="px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 max-w-7xl mx-auto">
-  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12">
+  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12 reveal">
     <span class="text-xs font-semibold tracking-widest uppercase text-secondary">In the Media</span>
     <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">YouTube Talks &amp; Featured News</h2>
   </div>
 
   <!-- featured video -->
-  <div class="bg-white rounded-3xl p-5 sm:p-6 md:p-8 ambient-shadow border border-outline-variant/30 mb-10">
+  <div class="bg-white rounded-3xl p-5 sm:p-6 md:p-8 ambient-shadow border border-outline-variant/30 mb-10 reveal">
     <div class="text-xs font-semibold tracking-widest uppercase text-secondary mb-3">Featured Talk</div>
-    <div id="featured-video" class="aspect-video w-full rounded-2xl overflow-hidden bg-black relative cursor-pointer group" data-yt="8P0T1kTAh2o" role="button" tabindex="0" aria-label="Play featured talk by Dr. Joylene D'Almeida">
-      <img src="https://img.youtube.com/vi/8P0T1kTAh2o/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/8P0T1kTAh2o/hqdefault.jpg';" alt="Featured talk by Dr. Joylene D'Almeida — YouTube thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/0 to-black/0"></div>
-      <div class="absolute inset-0 flex items-center justify-center">
-        <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/95 flex items-center justify-center text-primary shadow-2xl group-hover:scale-110 transition">
-          <span class="material-symbols-outlined" style="font-size:48px;">play_arrow</span>
-        </div>
-      </div>
+    <div id="featured-video" class="aspect-video w-full rounded-2xl overflow-hidden bg-black relative">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/8P0T1kTAh2o?autoplay=1&mute=1&loop=1&playlist=8P0T1kTAh2o&controls=1&modestbranding=1&rel=0&playsinline=1"
+        title="Featured talk by Dr. Joylene D'Almeida"
+        class="absolute inset-0 w-full h-full"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen></iframe>
     </div>
-    <p class="text-sm text-on-surface-variant mt-4">In conversation with Dr. Joylene Diana D'Almeida on women's health.</p>
+    <p class="text-sm text-on-surface-variant mt-4">In conversation with Dr. Joylene Diana D'Almeida on women's health. <a href="https://www.youtube.com/watch?v=8P0T1kTAh2o" target="_blank" rel="noopener" class="text-primary font-semibold hover:underline">Watch full on YouTube →</a></p>
   </div>
 
   <h3 class="font-serif text-2xl font-medium text-primary mb-5">More Videos</h3>
@@ -834,7 +1079,7 @@
 <section id="testimonials" class="relative px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 bg-surface-soft overflow-hidden">
   <div class="absolute -top-20 -right-20 w-[500px] h-[500px] bg-blush/60 rounded-full blur-[120px] -z-0"></div>
   <div class="max-w-7xl mx-auto relative z-10">
-    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12">
+    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12 reveal">
       <span class="text-xs font-semibold tracking-widest uppercase text-secondary">Patient Stories</span>
       <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Real Reviews from Real Patients</h2>
       <p class="text-on-surface-variant">Verified Google reviews — read more or leave yours below.</p>
@@ -914,7 +1159,7 @@
 
 <!-- =================== FAQ =================== -->
 <section id="faq" class="px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 max-w-5xl mx-auto">
-  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12">
+  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12 reveal">
     <span class="text-xs font-semibold tracking-widest uppercase text-secondary">Common Questions</span>
     <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Frequently Asked Questions</h2>
   </div>
@@ -925,7 +1170,7 @@
         <span class="font-serif text-lg text-primary">How can I book an appointment with Dr. Joylene?</span>
         <span class="material-symbols-outlined text-primary chev">expand_more</span>
       </summary>
-      <p class="text-on-surface-variant mt-3 leading-relaxed">You can call Pulse Polyclinic on <a class="text-primary font-semibold hover:underline" href="tel:+919880487755">+91 98804 87755</a>, or The Olive Clinics on <a class="text-primary font-semibold hover:underline" href="tel:+916362532742">+91 63625 32742</a>. WhatsApp messages are accepted for queries and bookings. Walk-in consultations are subject to availability.</p>
+      <p class="text-on-surface-variant mt-3 leading-relaxed">For Pulse Polyclinic, the appointment line is <a class="text-primary font-semibold hover:underline" href="tel:+919663557319">+91 96635 57319</a> (call or WhatsApp). The clinic reception is <a class="text-primary font-semibold hover:underline" href="tel:+919880487755">+91 98804 87755</a>. For The Olive Clinics, call <a class="text-primary font-semibold hover:underline" href="tel:+916362532742">+91 63625 32742</a>. Walk-in consultations are subject to availability.</p>
     </details>
 
     <details class="group bg-white rounded-2xl px-5 sm:px-6 py-4 sm:py-5 ambient-shadow border border-outline-variant/30">
@@ -981,7 +1226,7 @@
 <!-- =================== CONTACT / SOCIALS =================== -->
 <section id="contact" class="px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 bg-surface-soft">
   <div class="max-w-7xl mx-auto">
-    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12">
+    <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-12 reveal">
       <span class="text-xs font-semibold tracking-widest uppercase text-secondary">Connect</span>
       <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Get in Touch</h2>
       <p class="text-on-surface-variant">For appointments, queries, talks and collaborations.</p>
@@ -1041,7 +1286,7 @@
 
 <!-- =================== CV / FULL PROFILE =================== -->
 <section id="cv" class="px-5 sm:px-6 md:px-10 py-12 sm:py-14 md:py-20 max-w-7xl mx-auto">
-  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-10">
+  <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-10 reveal">
     <span class="text-xs font-semibold tracking-widest uppercase text-secondary">Curriculum Vitae</span>
     <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Professional Profile</h2>
   </div>
@@ -1139,7 +1384,7 @@
       <h4 class="font-semibold text-white mb-4 text-sm tracking-wider uppercase">Pulse Polyclinic</h4>
       <p class="text-sm text-white/70 leading-relaxed">
         Jayashree Nursing Home, Near City Centre Mall, K.S. Rao Road, Mangaluru<br/>
-        <a href="tel:+919880487755" class="hover:text-white">+91 98804 87755</a>
+        <a href="tel:+919663557319" class="hover:text-white">+91 96635 57319</a> · <a href="tel:+919880487755" class="hover:text-white">+91 98804 87755</a>
       </p>
     </div>
 
@@ -1161,16 +1406,21 @@
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
 
-  // Featured video — opens on YouTube (uploader has embedding disabled, Error 153)
+  // Scroll-reveal: every section/card with .reveal fades & rises into view
   (function(){
-    const v = document.getElementById('featured-video');
-    if (!v) return;
-    function open(){
-      const id = v.getAttribute('data-yt');
-      window.open('https://www.youtube.com/watch?v='+id, '_blank', 'noopener');
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+      return;
     }
-    v.addEventListener('click', open);
-    v.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();open();} });
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   })();
 
   // Lightbox
