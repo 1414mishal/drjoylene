@@ -1014,6 +1014,15 @@
       <button type="button" data-lightbox="WhatsApp Image 2026-05-02 at 9.56.09 PM (2).jpeg" class="gallery-tile aspect-square overflow-hidden rounded-2xl ambient-shadow block group focus:outline-none focus:ring-4 focus:ring-primary/30"><img src="WhatsApp Image 2026-05-02 at 9.56.09 PM (2).jpeg" alt="Dr. Joylene D'Almeida with patient" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" /></button>
     </div>
 
+    <!-- Talks & Community -->
+    <h3 class="font-serif text-xl sm:text-2xl font-medium text-primary text-center mt-12 mb-4 sm:mb-5 reveal">Talks & Community</h3>
+    <div class="gallery-tile-grid">
+      <button type="button" data-lightbox="WhatsApp Image 2026-05-02 at 9.56.07 PM.jpeg" class="gallery-tile aspect-square overflow-hidden rounded-2xl ambient-shadow block group focus:outline-none focus:ring-4 focus:ring-primary/30"><img src="WhatsApp Image 2026-05-02 at 9.56.07 PM.jpeg" alt="Dr. Joylene D'Almeida — talk and community" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" /></button>
+      <button type="button" data-lightbox="WhatsApp Image 2026-05-02 at 9.56.07 PM (1).jpeg" class="gallery-tile aspect-square overflow-hidden rounded-2xl ambient-shadow block group focus:outline-none focus:ring-4 focus:ring-primary/30"><img src="WhatsApp Image 2026-05-02 at 9.56.07 PM (1).jpeg" alt="Dr. Joylene D'Almeida — community work" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" /></button>
+      <button type="button" data-lightbox="WhatsApp Image 2026-05-02 at 9.56.07 PM (2).jpeg" class="gallery-tile aspect-square overflow-hidden rounded-2xl ambient-shadow block group focus:outline-none focus:ring-4 focus:ring-primary/30"><img src="WhatsApp Image 2026-05-02 at 9.56.07 PM (2).jpeg" alt="Dr. Joylene D'Almeida — conference moment" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" /></button>
+      <button type="button" data-lightbox="WhatsApp Image 2026-05-02 at 9.56.08 PM.jpeg" class="gallery-tile aspect-square overflow-hidden rounded-2xl ambient-shadow block group focus:outline-none focus:ring-4 focus:ring-primary/30"><img src="WhatsApp Image 2026-05-02 at 9.56.08 PM.jpeg" alt="Dr. Joylene D'Almeida — moment" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" /></button>
+    </div>
+
     <!-- Newspaper Features -->
     <h3 class="font-serif text-xl sm:text-2xl font-medium text-primary text-center mt-12 mb-4 sm:mb-5 reveal">Newspaper Features</h3>
     <div class="gallery-tile-grid">
@@ -1550,7 +1559,8 @@
     });
   })();
 
-  // Featured YouTube — autoplay muted (browser policy), one-tap unmute, loop 3:38→4:58
+  // Featured YouTube — auto-plays with sound when scrolled into view,
+  // pauses when scrolled away. Loops 3:38 → 4:58 cleanly.
   (function(){
     const FEATURED = { id: 'featured-yt', start: 218, end: 298 };
     const tag = document.createElement('script');
@@ -1558,8 +1568,10 @@
     document.head.appendChild(tag);
     window.onYouTubeIframeAPIReady = function(){
       const iframe = document.getElementById(FEATURED.id);
+      const wrap   = document.getElementById('featured-video');
       const unmute = document.getElementById('yt-unmute');
-      if (!iframe) return;
+      if (!iframe || !wrap) return;
+
       const player = new YT.Player(iframe, {
         events: {
           onStateChange: (e)=>{
@@ -1570,6 +1582,39 @@
           }
         }
       });
+
+      // Try to start unmuted; fall back to muted-autoplay if browser blocks it.
+      let triedUnmuted = false;
+      const playWithSound = () => {
+        try {
+          player.unMute();
+          player.setVolume(80);
+          player.playVideo();
+          triedUnmuted = true;
+          if (unmute) unmute.style.display = 'none';
+          // After ~600ms verify it actually started; if not, fall back.
+          setTimeout(()=>{
+            const state = player.getPlayerState && player.getPlayerState();
+            if (state !== YT.PlayerState.PLAYING) {
+              player.mute();
+              player.playVideo();
+              if (unmute) unmute.style.display = ''; // show "Tap for sound"
+            }
+          }, 600);
+        } catch(_) {}
+      };
+      const stop = () => { try { player.pauseVideo(); } catch(_) {} };
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(en=>{
+            if (en.isIntersecting) playWithSound();
+            else                   stop();
+          });
+        }, { threshold: 0.55 });
+        io.observe(wrap);
+      }
+
       if (unmute) {
         unmute.addEventListener('click', ()=>{
           try { player.unMute(); player.setVolume(80); player.playVideo(); } catch(_) {}
