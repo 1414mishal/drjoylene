@@ -215,106 +215,137 @@
   }
   .morph { animation: morph 12s ease-in-out infinite; }
 
-  /* ===== "Vita" — over-the-top gynaecology animation ===== */
-  .vita-stage {
+  /* ===== "Nurture" — calm line-art stage ===== */
+  .nurture-stage {
     position: relative;
-    height: 460px;
+    height: 440px;
     border-radius: 2rem;
     overflow: hidden;
-    background:
-      radial-gradient(ellipse at 20% 30%, #fdeef2 0%, transparent 55%),
-      radial-gradient(ellipse at 80% 70%, #efdbff 0%, transparent 55%),
-      linear-gradient(135deg, #fff 0%, #f6efff 100%);
-    box-shadow: 0 30px 80px -30px rgba(52,21,71,0.25);
+    background: linear-gradient(135deg, #fff 0%, #fbf6ff 100%);
+    box-shadow: 0 30px 80px -32px rgba(52,21,71,0.18);
     isolation: isolate;
   }
-  @media (max-width: 640px) { .vita-stage { height: 360px; } }
+  @media (max-width: 640px) { .nurture-stage { height: 360px; } }
 
-  /* slow rotating aura */
-  .vita-aura {
-    position: absolute; inset: -10%;
-    background: conic-gradient(from 0deg, rgba(115,81,134,0.12), rgba(214,168,255,0.0) 30%, rgba(253,222,234,0.18) 55%, rgba(115,81,134,0.10) 100%);
-    animation: spinSlow 28s linear infinite;
-    filter: blur(20px);
-    z-index: 0;
-  }
-  @keyframes spinSlow { to { transform: rotate(360deg); } }
+  .nurture-bg { position: absolute; inset: 0; z-index: 0; }
+  .nurture-bg svg { width: 100%; height: 100%; display: block; }
 
-  /* drifting petals */
-  .petal {
-    position: absolute; width: 22px; height: 22px;
-    background: radial-gradient(ellipse at 30% 30%, #ffd6e3, #d6a8ff 70%, transparent 75%);
-    border-radius: 70% 30% 70% 30% / 30% 70% 30% 70%;
-    opacity: .85;
-    filter: blur(.3px);
-    animation: drift 16s linear infinite;
-    z-index: 2;
-  }
-  .petal.p2 { width:14px; height:14px; animation-duration: 20s; opacity:.7; }
-  .petal.p3 { width:10px; height:10px; animation-duration: 24s; opacity:.6; }
-  @keyframes drift {
-    0%   { transform: translate(0,420px) rotate(0deg); }
-    100% { transform: translate(40px,-40px) rotate(360deg); }
-  }
+  /* slow breathing background blob */
+  @keyframes breathe { 0%,100% { transform: scale(1);   opacity:.95; } 50% { transform: scale(1.04); opacity:1; } }
+  .breathe { animation: breathe 9s ease-in-out infinite; transform-origin: 50% 50%; }
+  @media (prefers-reduced-motion: reduce) { .breathe { animation: none; } }
 
-  /* heartbeat EKG */
-  .ekg-line { stroke: #4b2c5e; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round;
-    stroke-dasharray: 1200; stroke-dashoffset: 1200; animation: trace 3.4s ease-in-out infinite; }
-  @keyframes trace {
-    0% { stroke-dashoffset: 1200; }
-    50% { stroke-dashoffset: 0; }
-    100% { stroke-dashoffset: -1200; }
+  .nurture-art {
+    position: absolute; inset: 0; margin: auto;
+    width: min(560px, 92%); height: auto; z-index: 2;
+    top: 50%; transform: translateY(-50%);
   }
-  .pulse-dot {
-    transform-origin: center;
-    animation: pulse 1.4s ease-in-out infinite;
-    fill: #341547;
+  .nurture-art .draw {
+    stroke-dasharray: 800; stroke-dashoffset: 800;
+    animation: drawIn 2.6s cubic-bezier(.5,.05,.2,1) forwards;
   }
-  @keyframes pulse { 0%,100% { transform: scale(1); opacity:.9; } 50% { transform: scale(1.7); opacity:.4; } }
+  .nurture-art .d2 { animation-delay: .35s; }
+  .nurture-art .d3 { animation-delay: .9s; }
+  .nurture-art .d4 { animation-delay: 1.6s; animation-duration: 1.4s; }
+  .nurture-art .d5 { animation-delay: 1.9s; }
+  .nurture-art .d6 { animation-delay: 2.1s; }
+  @keyframes drawIn { to { stroke-dashoffset: 0; } }
 
-  /* DNA double helix */
-  .helix { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; }
-  .helix svg { overflow: visible; }
-  @keyframes spinY { to { transform: rotateY(360deg); } }
-  .helix-inner { animation: spinY 8s linear infinite; transform-style: preserve-3d; }
-
-  /* lotus bloom centre */
-  .bloom-petal {
-    transform-origin: 50% 100%;
-    animation: bloom 6s ease-in-out infinite alternate;
-    fill: url(#bloomGrad);
-    opacity: .92;
+  .nurture-pills {
+    position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
+    display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem .55rem;
+    z-index: 3; padding: 0 1rem; max-width: 92%;
   }
-  @keyframes bloom {
-    0%   { transform: scale(.4) rotate(var(--r,0deg)); opacity:.4; }
-    100% { transform: scale(1)   rotate(var(--r,0deg)); opacity:.95; }
+  .np-pill {
+    font-family: 'Noto Serif', serif; font-size: 12px; letter-spacing: .14em;
+    text-transform: uppercase; color: #341547;
+    padding: 6px 14px; border-radius: 999px;
+    background: rgba(255,255,255,.78); backdrop-filter: blur(6px);
+    border: 1px solid rgba(115,81,134,.18);
+    opacity: 0; transform: translateY(8px);
+    animation: pillIn .9s ease-out forwards; animation-delay: var(--d, 0s);
+  }
+  @keyframes pillIn { to { opacity: 1; transform: translateY(0); } }
+
+  /* ===== Hero — staggered entrance + breathing organic SVG ===== */
+  @keyframes heroRise {
+    0% { opacity: 0; transform: translateY(18px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .hero-stagger > * {
+    opacity: 0;
+    animation: heroRise .9s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .hero-stagger > *:nth-child(1) { animation-delay: .05s; }
+  .hero-stagger > *:nth-child(2) { animation-delay: .20s; }
+  .hero-stagger > *:nth-child(3) { animation-delay: .35s; }
+  .hero-stagger > *:nth-child(4) { animation-delay: .50s; }
+  .hero-stagger > *:nth-child(5) { animation-delay: .65s; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-stagger > * { opacity: 1; animation: none; }
   }
 
-  /* glowing orbits */
-  .orbit { position: absolute; top:50%; left:50%; border: 1px dashed rgba(115,81,134,.25); border-radius: 50%; transform: translate(-50%,-50%); }
-  .orbit::after {
-    content: ""; position: absolute; top:-6px; left: 50%; width: 10px; height: 10px; border-radius: 50%;
-    background: radial-gradient(circle, #fff 0%, #d6a8ff 60%, #735186 100%);
-    box-shadow: 0 0 18px 4px rgba(214,168,255,.6);
-    transform: translateX(-50%);
+  .hero-breathe-svg {
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    width: 100%; height: 100%;
   }
-  .orbit.o1 { width: 220px; height: 220px; animation: spinSlow 14s linear infinite; }
-  .orbit.o2 { width: 320px; height: 320px; animation: spinSlow 22s linear infinite reverse; }
-  .orbit.o3 { width: 420px; height: 420px; animation: spinSlow 32s linear infinite; }
+  .hero-breathe-svg .blob1 { animation: breathe 11s ease-in-out infinite; transform-origin: 70% 30%; }
+  .hero-breathe-svg .blob2 { animation: breathe 14s ease-in-out infinite reverse; transform-origin: 20% 80%; }
 
-  /* sparkles */
-  .spark {
-    position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%;
-    box-shadow: 0 0 12px 3px rgba(255,255,255,.9), 0 0 30px 6px rgba(214,168,255,.7);
-    animation: twinkle 2.6s ease-in-out infinite;
-    z-index: 4;
+  /* ===== Pulse CTA — radiating wave behind primary buttons ===== */
+  .cta-pulse { position: relative; isolation: isolate; }
+  .cta-pulse::before, .cta-pulse::after {
+    content: ""; position: absolute; inset: 0;
+    border-radius: 9999px;
+    box-shadow: 0 0 0 0 rgba(52,21,71,.45);
+    z-index: -1;
+    animation: ctaPulse 2.6s cubic-bezier(.2,.7,.3,1) infinite;
   }
-  @keyframes twinkle { 0%,100% { opacity:.2; transform: scale(.6); } 50% { opacity:1; transform: scale(1.2); } }
+  .cta-pulse::after { animation-delay: 1.3s; }
+  @keyframes ctaPulse {
+    0%   { box-shadow: 0 0 0 0   rgba(115,81,134,.35); opacity: .9; }
+    70%  { box-shadow: 0 0 0 18px rgba(115,81,134,0);   opacity: 0; }
+    100% { box-shadow: 0 0 0 0   rgba(115,81,134,0);   opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta-pulse::before, .cta-pulse::after { animation: none; display: none; }
+  }
 
-  .vita-caption {
-    position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
-    font-family: 'Noto Serif', serif; color: #341547; font-size: 14px; letter-spacing: .12em;
-    text-transform: uppercase; opacity: .85; z-index: 6; white-space: nowrap;
+  /* ===== Service / specialisation cards — floating icon + pastel border + glow ===== */
+  .svc-card {
+    position: relative;
+    border: 1px solid rgba(206,195,206,.4);
+    transition: transform .5s cubic-bezier(.2,.7,.2,1),
+                box-shadow .5s ease,
+                border-color .5s ease;
+  }
+  .svc-card::before {
+    content: ""; position: absolute; inset: -1px; border-radius: inherit;
+    background: radial-gradient(60% 80% at 50% 0%, rgba(255,214,227,.5), transparent 70%);
+    opacity: 0; transition: opacity .5s ease; pointer-events: none; z-index: 0;
+  }
+  .svc-card > * { position: relative; z-index: 1; }
+  .svc-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(214,168,255,.7);
+    box-shadow: 0 22px 48px -18px rgba(115,81,134,0.28);
+  }
+  .svc-card:nth-child(3n):hover  { border-color: rgba(255,182,205,.7); }
+  .svc-card:nth-child(3n+1):hover{ border-color: rgba(180,225,225,.85); }
+  .svc-card:hover::before { opacity: 1; }
+  .svc-card:hover .svc-icon { transform: translateY(-4px); }
+  .svc-icon {
+    transition: transform .6s cubic-bezier(.2,.7,.2,1);
+    animation: floatIcon 4.6s ease-in-out infinite;
+  }
+  .svc-card:hover .svc-icon { animation-play-state: paused; }
+  @keyframes floatIcon {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-3px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .svc-icon { animation: none; }
+    .svc-card { transition: none; }
   }
 </style>
 </head>
@@ -338,7 +369,7 @@
       <a href="#faq" class="text-on-surface-variant hover:text-primary transition">FAQ</a>
       <a href="#contact" class="text-on-surface-variant hover:text-primary transition">Contact</a>
     </nav>
-    <a href="#book" class="hidden md:inline-flex bg-primary text-white text-[11px] sm:text-xs tracking-widest font-semibold uppercase px-4 sm:px-5 py-2.5 sm:py-3 rounded-full hover:bg-secondary transition">
+    <a href="#book" class="cta-pulse hidden md:inline-flex bg-primary text-white text-[11px] sm:text-xs tracking-widest font-semibold uppercase px-4 sm:px-5 py-2.5 sm:py-3 rounded-full hover:bg-secondary transition">
       Book Appointment
     </a>
     <button class="lg:hidden text-primary" onclick="document.getElementById('mobnav').classList.toggle('hidden')">
@@ -365,11 +396,24 @@
 
 <!-- =================== HERO =================== -->
 <section class="relative px-5 sm:px-6 md:px-10 py-10 sm:py-14 md:py-24 max-w-7xl mx-auto overflow-hidden">
-  <div class="absolute top-0 right-0 w-[400px] h-[400px] md:w-[600px] md:h-[600px] bg-lavender/40 rounded-full blur-[110px] -z-10 translate-x-1/4 -translate-y-1/4"></div>
-  <div class="absolute bottom-0 left-0 w-[300px] h-[300px] md:w-[420px] md:h-[420px] bg-blush-deep/40 rounded-full blur-[90px] -z-10 -translate-x-1/4 translate-y-1/4"></div>
+  <!-- breathing organic background -->
+  <svg class="hero-breathe-svg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="heroBlob1" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#efdbff" stop-opacity=".75"/>
+        <stop offset="1" stop-color="#efdbff" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="heroBlob2" cx="50%" cy="50%" r="50%">
+        <stop offset="0" stop-color="#fdeef2" stop-opacity=".85"/>
+        <stop offset="1" stop-color="#fdeef2" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <path class="blob1" d="M860,80 C1040,120 1180,260 1140,420 C1100,560 920,580 800,500 C680,420 700,260 760,170 C800,110 820,80 860,80 Z" fill="url(#heroBlob1)"/>
+    <path class="blob2" d="M120,520 C260,440 420,460 460,580 C500,700 360,720 220,680 C100,650 60,580 120,520 Z" fill="url(#heroBlob2)"/>
+  </svg>
 
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
-    <div class="lg:col-span-7 z-10 flex flex-col gap-4 md:gap-5 order-2 lg:order-1">
+    <div class="lg:col-span-7 z-10 flex flex-col gap-4 md:gap-5 order-2 lg:order-1 hero-stagger">
       <span class="text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-secondary">Empathetic Professionalism in Women's Health</span>
       <h1 class="font-serif text-[2rem] leading-[1.1] sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-primary">
         Dr. Joylene Diana <br class="hidden sm:block"/>D'Almeida
@@ -385,7 +429,7 @@
         <span class="bg-white border border-primary/15 text-primary text-[11px] sm:text-xs font-semibold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full">PGDMLS</span>
       </div>
       <div class="flex flex-wrap gap-2 sm:gap-3 pt-3 sm:pt-4">
-        <a href="#book" class="bg-primary text-white text-[11px] sm:text-xs tracking-widest font-semibold uppercase px-5 sm:px-7 py-3.5 sm:py-4 rounded-full hover:bg-secondary transition shadow-md inline-flex items-center gap-2">
+        <a href="#book" class="cta-pulse bg-primary text-white text-[11px] sm:text-xs tracking-widest font-semibold uppercase px-5 sm:px-7 py-3.5 sm:py-4 rounded-full hover:bg-secondary transition shadow-md inline-flex items-center gap-2">
           Book Appointment
           <span class="material-symbols-outlined text-[16px] sm:text-[18px]">arrow_forward</span>
         </a>
@@ -443,111 +487,53 @@
   </div>
 </section>
 
-<!-- =================== VITA — gynaecology animation =================== -->
-<section aria-label="Every life, lovingly tended" class="px-5 sm:px-6 md:px-10 py-10 sm:py-14 md:py-20 max-w-7xl mx-auto">
+<!-- =================== NURTURE — calm line-art entrance =================== -->
+<section aria-label="A quiet promise of care" class="px-5 sm:px-6 md:px-10 py-10 sm:py-14 md:py-20 max-w-7xl mx-auto">
   <div class="text-center max-w-3xl mx-auto flex flex-col gap-3 mb-8 sm:mb-10 reveal">
-    <span class="text-xs font-semibold tracking-widest uppercase text-secondary">A Living Promise</span>
-    <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Where Science Meets the Sacred Spark of Life</h2>
-    <p class="text-on-surface-variant max-w-2xl mx-auto">From the first heartbeat to the strength of a mother — every patient is a universe.</p>
+    <span class="text-xs font-semibold tracking-widest uppercase text-secondary">A Quiet Promise</span>
+    <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-medium text-primary leading-tight">Care that listens before it acts.</h2>
+    <p class="text-on-surface-variant max-w-2xl mx-auto">From adolescence through motherhood and beyond — every patient, every chapter, treated with the time it deserves.</p>
   </div>
 
-  <div class="vita-stage reveal reveal-delay-1">
-    <div class="vita-aura"></div>
-
-    <!-- orbits -->
-    <div class="orbit o1"></div>
-    <div class="orbit o2"></div>
-    <div class="orbit o3"></div>
-
-    <!-- DNA helix -->
-    <div class="helix">
-      <div class="helix-inner">
-        <svg width="120" height="280" viewBox="0 0 120 280" aria-hidden="true">
-          <defs>
-            <linearGradient id="dnaA" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#341547"/>
-              <stop offset="1" stop-color="#735186"/>
-            </linearGradient>
-            <linearGradient id="dnaB" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#d6a8ff"/>
-              <stop offset="1" stop-color="#ffd6e3"/>
-            </linearGradient>
-          </defs>
-          <!-- two helical strands -->
-          <path d="M20,0 C100,30 100,70 20,100 C100,130 100,170 20,200 C100,230 100,270 20,280" stroke="url(#dnaA)" stroke-width="3" fill="none" />
-          <path d="M100,0 C20,30 20,70 100,100 C20,130 20,170 100,200 C20,230 20,270 100,280" stroke="url(#dnaB)" stroke-width="3" fill="none" />
-          <!-- rungs -->
-          <g stroke="#735186" stroke-width="1.5" opacity=".55">
-            <line x1="22" y1="14" x2="98" y2="14"/>
-            <line x1="38" y1="42" x2="82" y2="42"/>
-            <line x1="58" y1="70" x2="62" y2="70"/>
-            <line x1="38" y1="98" x2="82" y2="98"/>
-            <line x1="22" y1="126" x2="98" y2="126"/>
-            <line x1="38" y1="154" x2="82" y2="154"/>
-            <line x1="58" y1="182" x2="62" y2="182"/>
-            <line x1="38" y1="210" x2="82" y2="210"/>
-            <line x1="22" y1="238" x2="98" y2="238"/>
-            <line x1="38" y1="266" x2="82" y2="266"/>
-          </g>
-        </svg>
-      </div>
+  <div class="nurture-stage reveal reveal-delay-1">
+    <div class="nurture-bg breathe" aria-hidden="true">
+      <svg viewBox="0 0 800 460" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="nurtureGrad" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#fdeef2"/>
+            <stop offset=".5" stop-color="#f4e6ff"/>
+            <stop offset="1" stop-color="#efdbff"/>
+          </linearGradient>
+        </defs>
+        <path d="M120,80 C260,20 520,40 700,140 C820,210 760,360 580,400 C400,440 200,420 100,320 C20,240 40,140 120,80 Z" fill="url(#nurtureGrad)" opacity=".85"/>
+      </svg>
     </div>
 
-    <!-- Lotus / bloom centre with EKG line -->
-    <svg class="absolute" style="top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;" width="260" height="260" viewBox="-130 -130 260 260" aria-hidden="true">
+    <svg class="nurture-art" viewBox="0 0 600 360" aria-hidden="true">
       <defs>
-        <radialGradient id="bloomGrad" cx="50%" cy="100%" r="80%">
-          <stop offset="0" stop-color="#ffd6e3"/>
-          <stop offset=".55" stop-color="#d6a8ff"/>
-          <stop offset="1" stop-color="#735186" stop-opacity=".0"/>
-        </radialGradient>
-        <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stop-color="#fff"/>
-          <stop offset=".5" stop-color="#ffd6e3"/>
-          <stop offset="1" stop-color="#d6a8ff" stop-opacity="0"/>
-        </radialGradient>
+        <linearGradient id="lineGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#735186"/>
+          <stop offset="1" stop-color="#341547"/>
+        </linearGradient>
       </defs>
-
-      <!-- 8 petals around centre -->
-      <g>
-        <ellipse class="bloom-petal" style="--r:0deg;"   cx="0" cy="-40" rx="14" ry="40"/>
-        <ellipse class="bloom-petal" style="--r:45deg;"  cx="0" cy="-40" rx="14" ry="40" transform="rotate(45)"/>
-        <ellipse class="bloom-petal" style="--r:90deg;"  cx="0" cy="-40" rx="14" ry="40" transform="rotate(90)"/>
-        <ellipse class="bloom-petal" style="--r:135deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(135)"/>
-        <ellipse class="bloom-petal" style="--r:180deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(180)"/>
-        <ellipse class="bloom-petal" style="--r:225deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(225)"/>
-        <ellipse class="bloom-petal" style="--r:270deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(270)"/>
-        <ellipse class="bloom-petal" style="--r:315deg;" cx="0" cy="-40" rx="14" ry="40" transform="rotate(315)"/>
+      <g fill="none" stroke="url(#lineGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path class="draw d1" d="M180,260 C180,200 220,160 270,160 C320,160 360,200 360,260" />
+        <path class="draw d2" d="M270,160 C270,120 250,90 220,80 C195,72 175,90 180,115 C184,135 210,150 270,160 Z" />
+        <path class="draw d3" d="M260,170 C290,140 330,135 360,160" />
+        <circle class="draw d4" cx="295" cy="225" r="6" />
       </g>
-
-      <!-- core glow -->
-      <circle r="22" fill="url(#coreGlow)"/>
-      <!-- pulsing heartbeat dot -->
-      <circle class="pulse-dot" r="6"/>
-
-      <!-- EKG sweep -->
-      <path class="ekg-line"
-            d="M-130,0 L-90,0 L-78,-8 L-66,16 L-54,-30 L-42,30 L-30,-12 L-18,0 L60,0 L72,-8 L84,16 L96,-30 L108,30 L120,-10 L130,0" />
+      <g fill="none" stroke="#d6a8ff" stroke-width="1.4" stroke-linecap="round" opacity=".6">
+        <path class="draw d5" d="M80,320 C140,300 200,300 240,320" />
+        <path class="draw d6" d="M340,320 C400,300 460,300 520,320" />
+      </g>
     </svg>
 
-    <!-- petals drifting -->
-    <span class="petal" style="left:8%; top:90%; animation-delay:0s;"></span>
-    <span class="petal p2" style="left:22%; top:95%; animation-delay:-3s;"></span>
-    <span class="petal p3" style="left:36%; top:88%; animation-delay:-7s;"></span>
-    <span class="petal" style="left:55%; top:96%; animation-delay:-1.5s;"></span>
-    <span class="petal p2" style="left:70%; top:90%; animation-delay:-9s;"></span>
-    <span class="petal p3" style="left:85%; top:94%; animation-delay:-12s;"></span>
-    <span class="petal p2" style="left:48%; top:92%; animation-delay:-5s;"></span>
-
-    <!-- sparkles -->
-    <span class="spark" style="left:18%; top:30%; animation-delay:-.4s;"></span>
-    <span class="spark" style="left:78%; top:24%; animation-delay:-1.2s;"></span>
-    <span class="spark" style="left:65%; top:72%; animation-delay:-2s;"></span>
-    <span class="spark" style="left:30%; top:65%; animation-delay:-2.6s;"></span>
-    <span class="spark" style="left:88%; top:55%; animation-delay:-1.8s;"></span>
-    <span class="spark" style="left:12%; top:60%; animation-delay:-.8s;"></span>
-
-    <div class="vita-caption">Heartbeat · Helix · Bloom</div>
+    <div class="nurture-pills">
+      <span class="np-pill" style="--d:0s">Adolescence</span>
+      <span class="np-pill" style="--d:.6s">Pregnancy</span>
+      <span class="np-pill" style="--d:1.2s">Motherhood</span>
+      <span class="np-pill" style="--d:1.8s">Menopause</span>
+    </div>
   </div>
 </section>
 
@@ -687,72 +673,72 @@
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-    <div class="bg-white rounded-2xl p-5 sm:p-6 ambient-shadow border border-outline-variant/30 hover:-translate-y-1 transition">
-      <div class="w-12 h-12 organic-shape-2 bg-primary/10 flex items-center justify-center text-primary mb-4">
+    <div class="svc-card bg-white rounded-2xl p-5 sm:p-6 ambient-shadow">
+      <div class="svc-icon w-12 h-12 organic-shape-2 bg-primary/10 flex items-center justify-center text-primary mb-4">
         <span class="material-symbols-outlined">surgical</span>
       </div>
       <h3 class="font-serif text-lg font-semibold text-primary">Minimally Invasive Gynecologic Surgery</h3>
       <p class="text-sm text-on-surface-variant mt-2">Advanced laparoscopic techniques for faster recovery and superior outcomes.</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-5 sm:p-6 ambient-shadow border border-outline-variant/30 hover:-translate-y-1 transition">
-      <div class="w-12 h-12 organic-shape-2 bg-blush flex items-center justify-center text-primary mb-4">
+    <div class="svc-card bg-white rounded-2xl p-5 sm:p-6 ambient-shadow">
+      <div class="svc-icon w-12 h-12 organic-shape-2 bg-blush flex items-center justify-center text-primary mb-4">
         <span class="material-symbols-outlined">healing</span>
       </div>
       <h3 class="font-serif text-lg font-semibold text-primary">Scarless Vaginal Hysterectomy</h3>
       <p class="text-sm text-on-surface-variant mt-2">For prolapse and non-descent cases — no visible external scars.</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-5 sm:p-6 ambient-shadow border border-outline-variant/30 hover:-translate-y-1 transition">
-      <div class="w-12 h-12 organic-shape-2 bg-lavender flex items-center justify-center text-primary mb-4">
+    <div class="svc-card bg-white rounded-2xl p-5 sm:p-6 ambient-shadow">
+      <div class="svc-icon w-12 h-12 organic-shape-2 bg-lavender flex items-center justify-center text-primary mb-4">
         <span class="material-symbols-outlined">medical_services</span>
       </div>
       <h3 class="font-serif text-lg font-semibold text-primary">Hysterectomy</h3>
       <p class="text-sm text-on-surface-variant mt-2">Both laparoscopic and open approaches based on patient need.</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-5 sm:p-6 ambient-shadow border border-outline-variant/30 hover:-translate-y-1 transition">
-      <div class="w-12 h-12 organic-shape-2 bg-tertiary-fixed flex items-center justify-center text-primary mb-4">
+    <div class="svc-card bg-white rounded-2xl p-5 sm:p-6 ambient-shadow">
+      <div class="svc-icon w-12 h-12 organic-shape-2 bg-tertiary-fixed flex items-center justify-center text-primary mb-4">
         <span class="material-symbols-outlined">circle</span>
       </div>
       <h3 class="font-serif text-lg font-semibold text-primary">Ovarian Cyst Removal</h3>
       <p class="text-sm text-on-surface-variant mt-2">Precise, ovary-conserving surgical management.</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-5 sm:p-6 ambient-shadow border border-outline-variant/30 hover:-translate-y-1 transition">
-      <div class="w-12 h-12 organic-shape-2 bg-blush flex items-center justify-center text-primary mb-4">
+    <div class="svc-card bg-white rounded-2xl p-5 sm:p-6 ambient-shadow">
+      <div class="svc-icon w-12 h-12 organic-shape-2 bg-blush flex items-center justify-center text-primary mb-4">
         <span class="material-symbols-outlined">grain</span>
       </div>
       <h3 class="font-serif text-lg font-semibold text-primary">Fibroid (Myoma) Management</h3>
       <p class="text-sm text-on-surface-variant mt-2">Medical, surgical and uterus-preserving options.</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-5 sm:p-6 ambient-shadow border border-outline-variant/30 hover:-translate-y-1 transition">
-      <div class="w-12 h-12 organic-shape-2 bg-lavender flex items-center justify-center text-primary mb-4">
+    <div class="svc-card bg-white rounded-2xl p-5 sm:p-6 ambient-shadow">
+      <div class="svc-icon w-12 h-12 organic-shape-2 bg-lavender flex items-center justify-center text-primary mb-4">
         <span class="material-symbols-outlined">healing</span>
       </div>
       <h3 class="font-serif text-lg font-semibold text-primary">Endometriosis Treatment</h3>
       <p class="text-sm text-on-surface-variant mt-2">Comprehensive medical and laparoscopic management.</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-5 sm:p-6 ambient-shadow border border-outline-variant/30 hover:-translate-y-1 transition">
-      <div class="w-12 h-12 organic-shape-2 bg-tertiary-fixed flex items-center justify-center text-primary mb-4">
+    <div class="svc-card bg-white rounded-2xl p-5 sm:p-6 ambient-shadow">
+      <div class="svc-icon w-12 h-12 organic-shape-2 bg-tertiary-fixed flex items-center justify-center text-primary mb-4">
         <span class="material-symbols-outlined">visibility</span>
       </div>
       <h3 class="font-serif text-lg font-semibold text-primary">Diagnostic Hysteroscopy</h3>
       <p class="text-sm text-on-surface-variant mt-2">Accurate evaluation of intrauterine pathologies.</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-5 sm:p-6 ambient-shadow border border-outline-variant/30 hover:-translate-y-1 transition">
-      <div class="w-12 h-12 organic-shape-2 bg-blush flex items-center justify-center text-primary mb-4">
+    <div class="svc-card bg-white rounded-2xl p-5 sm:p-6 ambient-shadow">
+      <div class="svc-icon w-12 h-12 organic-shape-2 bg-blush flex items-center justify-center text-primary mb-4">
         <span class="material-symbols-outlined">child_friendly</span>
       </div>
       <h3 class="font-serif text-lg font-semibold text-primary">Fertility-Enhancing Procedures</h3>
       <p class="text-sm text-on-surface-variant mt-2">Surgical interventions to improve fertility outcomes.</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-5 sm:p-6 ambient-shadow border border-outline-variant/30 hover:-translate-y-1 transition">
-      <div class="w-12 h-12 organic-shape-2 bg-lavender flex items-center justify-center text-primary mb-4">
+    <div class="svc-card bg-white rounded-2xl p-5 sm:p-6 ambient-shadow">
+      <div class="svc-icon w-12 h-12 organic-shape-2 bg-lavender flex items-center justify-center text-primary mb-4">
         <span class="material-symbols-outlined">water_drop</span>
       </div>
       <h3 class="font-serif text-lg font-semibold text-primary">Sling Procedures for SUI (TVT-O)</h3>
@@ -960,7 +946,8 @@
     <div class="text-xs font-semibold tracking-widest uppercase text-secondary mb-3">Featured Talk</div>
     <div id="featured-video" class="aspect-video w-full rounded-2xl overflow-hidden bg-black relative">
       <iframe
-        src="https://www.youtube-nocookie.com/embed/8P0T1kTAh2o?autoplay=1&mute=1&loop=1&playlist=8P0T1kTAh2o&controls=1&modestbranding=1&rel=0&playsinline=1"
+        id="featured-yt"
+        src="https://www.youtube-nocookie.com/embed/8P0T1kTAh2o?autoplay=1&mute=1&start=218&end=298&controls=1&modestbranding=1&rel=0&playsinline=1&enablejsapi=1"
         title="Featured talk by Dr. Joylene D'Almeida"
         class="absolute inset-0 w-full h-full"
         frameborder="0"
@@ -1456,6 +1443,28 @@
       else if (e.key==='ArrowRight') open(idx+1);
       else if (e.key==='ArrowLeft') open(idx-1);
     });
+  })();
+
+  // Featured YouTube — loop the 3:38 → 4:58 segment cleanly via IFrame API
+  (function(){
+    const FEATURED = { id: 'featured-yt', start: 218, end: 298 };
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+    window.onYouTubeIframeAPIReady = function(){
+      const iframe = document.getElementById(FEATURED.id);
+      if (!iframe) return;
+      const player = new YT.Player(iframe, {
+        events: {
+          onStateChange: (e)=>{
+            if (e.data === YT.PlayerState.ENDED) {
+              player.seekTo(FEATURED.start, true);
+              player.playVideo();
+            }
+          }
+        }
+      });
+    };
   })();
 </script>
 
