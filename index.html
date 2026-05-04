@@ -227,29 +227,58 @@
   }
   @media (max-width: 640px) { .nurture-stage { height: 360px; } }
 
-  .nurture-bg { position: absolute; inset: 0; z-index: 0; }
-  .nurture-bg svg { width: 100%; height: 100%; display: block; }
-
-  /* slow breathing background blob */
-  @keyframes breathe { 0%,100% { transform: scale(1);   opacity:.95; } 50% { transform: scale(1.04); opacity:1; } }
-  .breathe { animation: breathe 9s ease-in-out infinite; transform-origin: 50% 50%; }
-  @media (prefers-reduced-motion: reduce) { .breathe { animation: none; } }
+  /* breathing circles behind silhouette */
+  .nurture-circle {
+    position: absolute; border-radius: 50%; filter: blur(2px);
+    z-index: 1; pointer-events: none; mix-blend-mode: multiply;
+  }
+  .nc-teal {
+    width: 360px; height: 360px;
+    background: radial-gradient(circle at 50% 50%, rgba(180,225,225,.85) 0%, rgba(180,225,225,0) 70%);
+    top: 8%; left: 22%;
+    animation: nurtureBreatheA 7s ease-in-out infinite;
+  }
+  .nc-lav {
+    width: 420px; height: 420px;
+    background: radial-gradient(circle at 50% 50%, rgba(214,168,255,.7) 0%, rgba(214,168,255,0) 70%);
+    bottom: 4%; right: 18%;
+    animation: nurtureBreatheB 9s ease-in-out infinite;
+  }
+  @media (max-width: 640px) {
+    .nc-teal { width: 240px; height: 240px; left: 8%; }
+    .nc-lav  { width: 280px; height: 280px; right: 6%; }
+  }
+  @keyframes nurtureBreatheA {
+    0%,100% { transform: scale(1)    translate(0,0);     opacity:.85; }
+    50%     { transform: scale(1.08) translate(8px,-6px); opacity:1; }
+  }
+  @keyframes nurtureBreatheB {
+    0%,100% { transform: scale(1)    translate(0,0);      opacity:.8; }
+    50%     { transform: scale(1.1)  translate(-10px,8px); opacity:1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nc-teal, .nc-lav { animation: none; }
+  }
 
   .nurture-art {
-    position: absolute; inset: 0; margin: auto;
-    width: min(560px, 92%); height: auto; z-index: 2;
-    top: 50%; transform: translateY(-50%);
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(380px, 70%); height: auto; z-index: 2;
+    opacity: 0;
+    animation: silhouetteRise 1.4s cubic-bezier(.2,.7,.2,1) .2s forwards;
   }
-  .nurture-art .draw {
-    stroke-dasharray: 800; stroke-dashoffset: 800;
-    animation: drawIn 2.6s cubic-bezier(.5,.05,.2,1) forwards;
+  @keyframes silhouetteRise {
+    0%   { opacity: 0; transform: translate(-50%, -42%); }
+    100% { opacity: 1; transform: translate(-50%, -50%); }
   }
-  .nurture-art .d2 { animation-delay: .35s; }
-  .nurture-art .d3 { animation-delay: .9s; }
-  .nurture-art .d4 { animation-delay: 1.6s; animation-duration: 1.4s; }
-  .nurture-art .d5 { animation-delay: 1.9s; }
-  .nurture-art .d6 { animation-delay: 2.1s; }
-  @keyframes drawIn { to { stroke-dashoffset: 0; } }
+  .silhouette { transform-origin: 240px 240px; animation: silhouetteBreathe 6s ease-in-out infinite; }
+  .m-baby     { animation: silhouetteBabyBreathe 4s ease-in-out infinite; transform-origin: 248px 270px; }
+  @keyframes silhouetteBreathe     { 0%,100% { transform: scale(1); } 50% { transform: scale(1.015); } }
+  @keyframes silhouetteBabyBreathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+  @media (prefers-reduced-motion: reduce) {
+    .silhouette, .m-baby { animation: none; }
+    .nurture-art { animation: none; opacity: 1; }
+  }
 
   .nurture-pills {
     position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
@@ -496,36 +525,67 @@
   </div>
 
   <div class="nurture-stage reveal reveal-delay-1">
-    <div class="nurture-bg breathe" aria-hidden="true">
-      <svg viewBox="0 0 800 460" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="nurtureGrad" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0" stop-color="#fdeef2"/>
-            <stop offset=".5" stop-color="#f4e6ff"/>
-            <stop offset="1" stop-color="#efdbff"/>
-          </linearGradient>
-        </defs>
-        <path d="M120,80 C260,20 520,40 700,140 C820,210 760,360 580,400 C400,440 200,420 100,320 C20,240 40,140 120,80 Z" fill="url(#nurtureGrad)" opacity=".85"/>
-      </svg>
-    </div>
+    <!-- breathing soft circles behind the silhouette -->
+    <span class="nurture-circle nc-teal" aria-hidden="true"></span>
+    <span class="nurture-circle nc-lav"  aria-hidden="true"></span>
 
-    <svg class="nurture-art" viewBox="0 0 600 360" aria-hidden="true">
+    <!-- mother & child silhouette (layered SVG) -->
+    <svg class="nurture-art" viewBox="0 0 480 420" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="lineGrad" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stop-color="#735186"/>
-          <stop offset="1" stop-color="#341547"/>
+        <linearGradient id="motherGrad" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0"  stop-color="#4b2c5e"/>
+          <stop offset="1"  stop-color="#341547"/>
+        </linearGradient>
+        <linearGradient id="childGrad" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0"  stop-color="#735186"/>
+          <stop offset="1"  stop-color="#4b2c5e"/>
         </linearGradient>
       </defs>
-      <g fill="none" stroke="url(#lineGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path class="draw d1" d="M180,260 C180,200 220,160 270,160 C320,160 360,200 360,260" />
-        <path class="draw d2" d="M270,160 C270,120 250,90 220,80 C195,72 175,90 180,115 C184,135 210,150 270,160 Z" />
-        <path class="draw d3" d="M260,170 C290,140 330,135 360,160" />
-        <circle class="draw d4" cx="295" cy="225" r="6" />
+
+      <!-- mother body / shoulders / cradling arms -->
+      <path class="silhouette m-body" fill="url(#motherGrad)"
+            d="M240,150
+               C300,150 340,180 350,230
+               C360,275 350,330 320,360
+               C300,378 270,386 240,386
+               C210,386 180,378 160,360
+               C130,330 120,275 130,230
+               C140,180 180,150 240,150 Z" />
+
+      <!-- mother head -->
+      <circle class="silhouette m-head" cx="240" cy="118" r="38" fill="url(#motherGrad)"/>
+
+      <!-- mother hair flow (soft veil / hair drape) -->
+      <path class="silhouette m-hair" fill="#4b2c5e" opacity=".55"
+            d="M205,108
+               C200,80 220,60 240,60
+               C260,60 280,80 275,108
+               C268,135 280,160 260,178
+               C246,190 234,190 220,178
+               C200,160 212,135 205,108 Z"/>
+
+      <!-- baby cradled in arms -->
+      <g class="silhouette m-baby">
+        <!-- baby body wrapped -->
+        <path fill="url(#childGrad)"
+              d="M210,260
+                 C210,240 230,228 252,232
+                 C278,237 290,260 285,282
+                 C282,298 270,308 252,308
+                 C230,308 210,290 210,260 Z"/>
+        <!-- baby head -->
+        <circle cx="232" cy="248" r="14" fill="url(#childGrad)"/>
+        <!-- soft blanket highlight -->
+        <path fill="#d6a8ff" opacity=".35"
+              d="M218,272
+                 C228,268 258,268 278,278
+                 C268,290 250,294 232,290
+                 C222,288 215,282 218,272 Z"/>
       </g>
-      <g fill="none" stroke="#d6a8ff" stroke-width="1.4" stroke-linecap="round" opacity=".6">
-        <path class="draw d5" d="M80,320 C140,300 200,300 240,320" />
-        <path class="draw d6" d="M340,320 C400,300 460,300 520,320" />
-      </g>
+
+      <!-- subtle chest / cradle line on mother -->
+      <path class="silhouette m-cradle" fill="none" stroke="#d6a8ff" stroke-width="2.2" stroke-linecap="round" opacity=".55"
+            d="M168,250 C200,232 280,232 320,254"/>
     </svg>
 
     <div class="nurture-pills">
