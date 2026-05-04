@@ -231,17 +231,14 @@
   }
   .morph { animation: morph 12s ease-in-out infinite; }
 
-  /* ===== "Nurture" — calm line-art stage ===== */
+  /* ===== "Nurture" — calm line-art stage (blends into the page) ===== */
   .nurture-stage {
     position: relative;
-    height: 440px;
-    border-radius: 2rem;
-    overflow: hidden;
-    background: linear-gradient(135deg, #fff 0%, #fbf6ff 100%);
-    box-shadow: 0 30px 80px -32px rgba(52,21,71,0.18);
+    height: 460px;
+    background: transparent;
     isolation: isolate;
   }
-  @media (max-width: 640px) { .nurture-stage { height: 360px; } }
+  @media (max-width: 640px) { .nurture-stage { height: 380px; } }
 
   /* slowly morphing organic blob behind silhouette */
   .nurture-blob {
@@ -598,27 +595,6 @@
   </div>
 
   <div class="nurture-stage reveal reveal-delay-1" data-stage>
-    <!-- slowly morphing organic blob (lavender -> soft teal, very low opacity) -->
-    <svg class="nurture-blob" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="blobGrad" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0"  stop-color="#d6a8ff"/>
-          <stop offset=".55" stop-color="#c8d8ff"/>
-          <stop offset="1"  stop-color="#b4e1e1"/>
-        </linearGradient>
-        <filter id="blobBlur" x="-10%" y="-10%" width="120%" height="120%">
-          <feGaussianBlur stdDeviation="1.4" />
-        </filter>
-      </defs>
-      <path class="blob-morph" fill="url(#blobGrad)" opacity=".22" filter="url(#blobBlur)"
-            d="M420,120
-               C540,120 660,200 680,320
-               C700,440 600,520 480,540
-               C360,560 220,520 160,420
-               C100,320 140,200 240,150
-               C320,110 350,120 420,120 Z" />
-    </svg>
-
     <!-- mother & cradled baby — transparent silhouette with layered ambient animation -->
     <div class="nurture-figure">
       <span class="nurture-aura aura-a" aria-hidden="true"></span>
@@ -627,13 +603,6 @@
       <img class="nurture-art-img" src="mother-baby-nobg.png"
            alt="Line-art illustration of a mother cradling her sleeping baby"
            loading="lazy" decoding="async" />
-    </div>
-
-    <div class="nurture-pills">
-      <span class="np-pill" style="--d:2.4s">Adolescence</span>
-      <span class="np-pill" style="--d:2.7s">Pregnancy</span>
-      <span class="np-pill" style="--d:3.0s">Motherhood</span>
-      <span class="np-pill" style="--d:3.3s">Menopause</span>
     </div>
   </div>
 </section>
